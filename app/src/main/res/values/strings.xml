@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">DutchPayApp</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    <!--contentMain-->
+    <string name="welcome_userName">님, 안녕하세요!</string>
+    <string name="welcome_userMoney"> 원</string>
+    <string name="welcome_title">에 오신것을 환영합니다.</string>
+    <string name="welcome_logoText">언제 어디서나 바로바로 손쉽게</string>
+    <string name="welcome_eventTitle">아이유와 함께 하는 더치페이 할인 이벤트</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
