@@ -89,7 +89,7 @@
                 app:layout_constraintTop_toTopOf="@+id/layout_login" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4.28dp"
@@ -112,6 +112,7 @@
                 app:layout_constraintTop_toTopOf="@+id/layout_login" />
 
             <TextView
+                android:id="@+id/tvRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4.28dp"
