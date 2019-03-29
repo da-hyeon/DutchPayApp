@@ -2,6 +2,7 @@ package com.dutch.hdh.dutchpayapp.ui.register.password;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.dutch.hdh.dutchpayapp.R;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentRegisterPaymentPasswordBinding;
+import com.kinda.alert.KAlertDialog;
 
 public class Register_PaymentPasswordFragment extends Fragment implements Register_PaymentPasswordContract.View {
 
@@ -22,10 +24,9 @@ public class Register_PaymentPasswordFragment extends Fragment implements Regist
     private ImageView mDotImage[];
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_register_payment_password, container, false);
-
 
 
         //객체생성 및 데이터 초기화
@@ -48,7 +49,6 @@ public class Register_PaymentPasswordFragment extends Fragment implements Regist
         mBinding.viewOk.setOnClickListener(v ->
                 mPresenter.clickOKButton()
         );
-
 
         return mBinding.getRoot();
     }
@@ -87,12 +87,40 @@ public class Register_PaymentPasswordFragment extends Fragment implements Regist
         mPresenter.initRandomNumber();
     }
 
+    @Override
+    public void updateView() {
+        mPresenter.initRandomNumber();
+    }
+
     /**
      * 버튼 숫자 보여주기
      */
     @Override
     public void showRandomNumber(int index , String randomNumber) {
         mNumberTextViews[index].setText(randomNumber);
+    }
+
+    @Override
+    public void showSuccessDialog(String content) {
+        new KAlertDialog(getContext(), KAlertDialog.SUCCESS_TYPE)
+                .setTitleText("환영합니다.")
+                .setContentText(content)
+                .setConfirmText("확인")
+                .setConfirmClickListener(sDialog ->{
+                    sDialog.dismissWithAnimation();
+                    mPresenter.clickSuccessDialog();
+                })
+                .show();
+    }
+
+    @Override
+    public void showFailDialog(String content) {
+        new KAlertDialog(getContext(), KAlertDialog.WARNING_TYPE)
+                .setTitleText("실패")
+                .setContentText(content)
+                .setConfirmText("확인")
+                .setConfirmClickListener(sDialog -> {sDialog.dismissWithAnimation();})
+                .show();
     }
 
     /**
@@ -107,11 +135,13 @@ public class Register_PaymentPasswordFragment extends Fragment implements Regist
         }
     }
 
-    /**
-     * 실패메세지 보여주기
-     */
     @Override
-    public void Fail() {
-        Toast.makeText(getContext(), "결제 비밀번호는 6자리 입니다.", Toast.LENGTH_SHORT).show();
+    public void changeTitle(String content) {
+        mBinding.tvTitle.setText(content);
+    }
+
+    @Override
+    public void changeMiddleTitle(String content) {
+        mBinding.tvMiddleTitle.setText(content);
     }
 }

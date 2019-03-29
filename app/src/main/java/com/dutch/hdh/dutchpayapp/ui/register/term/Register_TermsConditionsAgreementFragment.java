@@ -2,16 +2,17 @@ package com.dutch.hdh.dutchpayapp.ui.register.term;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.dutch.hdh.dutchpayapp.R;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentRegisterTermsConditionsAgreementBinding;
+import com.kinda.alert.KAlertDialog;
 
 public class Register_TermsConditionsAgreementFragment extends Fragment implements Register_TermsConditionsAgreementContract.View{
 
@@ -21,8 +22,20 @@ public class Register_TermsConditionsAgreementFragment extends Fragment implemen
     private CheckBox mTermsConditions[];
     private ImageView mAllView[];
 
+
+
+    private static Register_TermsConditionsAgreementFragment curr = null;
+
+    public static Register_TermsConditionsAgreementFragment getInstance(){
+        if(curr == null){
+            curr = new Register_TermsConditionsAgreementFragment();
+        }
+        return curr;
+    }
+
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater , R.layout.fragment_register_terms_conditions_agreement, container, false);
 
@@ -36,9 +49,15 @@ public class Register_TermsConditionsAgreementFragment extends Fragment implemen
         //약관 동의 클릭
         for(int i  = 0 ; i < mTermsConditions.length; i++){
             int finalI = i;
-            mTermsConditions[i].setOnClickListener(v-> {
-                mPresenter.clickTOS(finalI, mTermsConditions[finalI].isChecked());
-                    }
+            mTermsConditions[i].setOnClickListener(v->
+                mPresenter.clickTOS(finalI, mTermsConditions[finalI].isChecked())
+            );
+        }
+
+        for(int i = 0; i < mAllView.length; i++){
+            int finalI = i;
+            mAllView[i].setOnClickListener(v ->
+                mPresenter.clickAllView(finalI)
             );
         }
         
@@ -53,8 +72,9 @@ public class Register_TermsConditionsAgreementFragment extends Fragment implemen
     /**
      * 객체생성 및 데이터초기화
      */
-    private void initData() {
-        mPresenter = new Register_TermsConditionsAgreementPresenter(this, getContext(), getActivity() , getFragmentManager());
+    @Override
+    public void initData() {
+        mPresenter = new Register_TermsConditionsAgreementPresenter(this, getContext(), getFragmentManager());
 
         mTermsConditions = new CheckBox[]{
                 mBinding.cbTermsConditions1,
@@ -74,8 +94,20 @@ public class Register_TermsConditionsAgreementFragment extends Fragment implemen
                 mBinding.viewAll5,
                 mBinding.viewAll6,
         };
+
+        mPresenter.refreshData(getArguments());
     }
-    
+
+    @Override
+    public void showDialog(String content) {
+        new KAlertDialog(getContext(), KAlertDialog.WARNING_TYPE)
+                .setTitleText("실패")
+                .setContentText(content)
+                .setConfirmText("확인")
+                .setConfirmClickListener(sDialog -> sDialog.dismissWithAnimation())
+                .show();
+    }
+
     @Override
     public void changeAllTOS(boolean state) {
         mBinding.cbCompleteAgreement.setChecked(state);
@@ -87,11 +119,13 @@ public class Register_TermsConditionsAgreementFragment extends Fragment implemen
     }
 
     @Override
+    public void changeAllView(int index, int id) {
+        mAllView[index].setImageResource(id);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        for(CheckBox checkBox : mTermsConditions){
-            checkBox.setChecked(false);
-        }
-        mBinding.cbCompleteAgreement.setChecked(false);
+        mPresenter.onResume();
     }
 }

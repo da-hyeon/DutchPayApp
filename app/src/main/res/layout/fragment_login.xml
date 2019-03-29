@@ -119,6 +119,33 @@
             android:layout_marginRight="17.14dp"
             android:layout_marginTop="98dp"
             />
+        <!--Layout-->
+        <LinearLayout
+            android:id="@+id/layoutRegister"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="@+id/view"
+            app:layout_constraintRight_toRightOf="@+id/view1"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            android:orientation="horizontal" />
+        <!--Layout-->
+
+        <!--View-->
+        <View
+            android:id="@+id/view"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="@+id/linearLayout"
+            app:layout_constraintRight_toLeftOf="@+id/image_userRegister" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toRightOf="@+id/image_userRegister"
+            app:layout_constraintRight_toLeftOf="@+id/imageView10" />
+        <!--View-->
 
         <ImageView
             android:id="@+id/image_userRegister"

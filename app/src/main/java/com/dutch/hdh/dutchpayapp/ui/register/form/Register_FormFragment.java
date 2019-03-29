@@ -6,28 +6,59 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.dutch.hdh.dutchpayapp.R;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentRegisterFormBinding;
+import com.kinda.alert.KAlertDialog;
 
 public class Register_FormFragment extends Fragment implements Register_FormContract.View{
 
     private FragmentRegisterFormBinding mBinding;
     private Register_FormContract.Presenter mPresenter;
 
-
+    private EditText mRegisterEditText[];
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater , R.layout.fragment_register_form, container, false);
 
-        mPresenter = new Register_FormPresenter(this , getContext() , getActivity().getSupportFragmentManager());
+        initData();
 
-        mBinding.btnNext.setOnClickListener(v->
-                mPresenter.clickRegister()
+        mBinding.btNext.setOnClickListener(v->
+                mPresenter.clickRegister(mRegisterEditText)
         );
 
         return mBinding.getRoot();
+    }
+
+    /**
+     * 객체생성 및 데이터초기화
+     */
+    private void initData() {
+        mRegisterEditText = new EditText[]{
+                mBinding.etEmail,
+                mBinding.etPassword,
+                mBinding.etPasswordCheck,
+                mBinding.etName,
+                mBinding.etBirth,
+                mBinding.etFirstRN,
+                mBinding.etPhone,
+                mBinding.etCN
+        };
+
+        mPresenter = new Register_FormPresenter(this , getContext() , getActivity().getSupportFragmentManager() );
+    }
+
+    @Override
+    public void showDialog(String content) {
+        new KAlertDialog(getContext(), KAlertDialog.WARNING_TYPE)
+                .setTitleText("실패")
+                .setContentText(content)
+                .setConfirmText("확인")
+                .setConfirmClickListener(sDialog -> sDialog.dismissWithAnimation())
+                .show();
     }
 }

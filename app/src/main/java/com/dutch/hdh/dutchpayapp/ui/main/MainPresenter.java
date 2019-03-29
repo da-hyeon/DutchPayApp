@@ -6,16 +6,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.dutch.hdh.dutchpayapp.R;
 import com.dutch.hdh.dutchpayapp.adapter.EventImageSliderAdapter;
-import com.dutch.hdh.dutchpayapp.data.User;
+import com.dutch.hdh.dutchpayapp.data.db.User;
 import com.dutch.hdh.dutchpayapp.ui.login.LoginFragment;
-import com.dutch.hdh.dutchpayapp.ui.register.form.Register_FormFragment;
+import com.dutch.hdh.dutchpayapp.ui.register.allview.Register_ViewAllTermsConditionsFragment;
 import com.dutch.hdh.dutchpayapp.ui.register.term.Register_TermsConditionsAgreementFragment;
 
 import java.util.ArrayList;
@@ -25,11 +24,14 @@ public class MainPresenter implements MainContract.Presenter {
     private MainContract.View mView;
     private Context mContext;
     private FragmentManager mFragmentManager;
-    private long mLastTime;
-    private User mUser;
 
-    private LoginFragment mLoginFragment = new LoginFragment();
-    private Register_TermsConditionsAgreementFragment mRegister_termsConditionsAgreementFragment = new Register_TermsConditionsAgreementFragment();
+    private long mLastTime;
+
+    private User mUser;
+    private DrawerLayout mDrawerLayout;
+
+    private LoginFragment mLoginFragment;
+    public Register_TermsConditionsAgreementFragment mRegister_termsConditionsAgreementFragment;
 
 
     private MainPresenter() {
@@ -46,15 +48,19 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void initLoginState() {
-        mView.showUserInfo(mUser.getUserName(), mUser.getUserDutchMoney(), mUser.isUserState());
+        mView.showUserInfo(mUser.getUserName(), mUser.getUserMoney(), mUser.isUserState());
     }
 
     @Override
-    public void setMainPresenter(MainContract.View mView, Context mContext, FragmentManager mFragmentManager) {
+    public void setMainPresenter(MainContract.View mView, Context mContext, FragmentManager mFragmentManager, DrawerLayout mDrawerLayout) {
         this.mView = mView;
         this.mContext = mContext;
         this.mFragmentManager = mFragmentManager;
+        this.mDrawerLayout = mDrawerLayout;
         mUser = User.getInstance();
+
+        mLoginFragment = new LoginFragment();
+        mRegister_termsConditionsAgreementFragment = Register_TermsConditionsAgreementFragment.getInstance();
     }
 
     @Override
@@ -91,18 +97,34 @@ public class MainPresenter implements MainContract.Presenter {
      */
     @Override
     public void clickBack() {
-        int fragmentCount = mFragmentManager.getBackStackEntryCount();
 
-        if (fragmentCount != 0) {
-            mFragmentManager.popBackStack();
-            mFragmentManager.executePendingTransactions();
-            fragmentCount = mFragmentManager.getBackStackEntryCount();
+        List fragmentList = mFragmentManager.getFragments();
+        for (int i = 0; i < fragmentList.size(); i++) {
+            if (fragmentList.get(i) instanceof Register_ViewAllTermsConditionsFragment) {
+                ((Register_ViewAllTermsConditionsFragment) fragmentList.get(i)).onBackPress();
+                return;
+            }
         }
 
-        if (fragmentCount == 0) {
-            mView.showBell();
-            mView.hideExit();
-            mView.changeTitle("");
+
+        int fragmentCount = mFragmentManager.getBackStackEntryCount();
+
+        //메뉴가 열려있으면 닫는다.
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.END)) {
+            mView.hideDrawerLayout();
+        } else {
+            if (fragmentCount != 0) {
+                mFragmentManager.popBackStack();
+                mFragmentManager.executePendingTransactions();
+                fragmentCount = mFragmentManager.getBackStackEntryCount();
+            }
+
+            if (fragmentCount == 0) {
+                mView.showMain();
+                mView.showBell();
+                mView.hideExit();
+                mView.changeTitle("");
+            }
         }
     }
 
@@ -112,14 +134,16 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void clickLogin() {
         mView.hideDrawerLayout();
+        mView.hideMain();
         if (!mLoginFragment.isVisible()) {
+            mFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
             mView.changeTitle("로그인");
             mView.hideBell();
             mView.showExit();
 
             FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-
-            mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, 0,0, R.anim.fade_out);
             fragmentTransaction.replace(R.id.fragment_main, mLoginFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
@@ -133,28 +157,34 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void clickRegister() {
         mView.hideDrawerLayout();
-        if (!mRegister_termsConditionsAgreementFragment.isVisible()) {
+        mView.hideMain();
+        if(!mRegister_termsConditionsAgreementFragment.isVisible()){
+            mFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
             mView.changeTitle("회원가입");
             mView.hideBell();
             mView.showExit();
 
             FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-            mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in,0,0, R.anim.fade_out);
             fragmentTransaction.replace(R.id.fragment_main, mRegister_termsConditionsAgreementFragment);
+            mRegister_termsConditionsAgreementFragment.setArguments(null);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
             mFragmentManager.executePendingTransactions();
         }
     }
 
+
     @Override
     public void clickLogout() {
+        mView.showMain();
         mView.hideDrawerLayout();
         mView.changeTitle("");
         mView.showBell();
         mView.hideExit();
         mUser.setUserState(false);
         mView.initData();
-        mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        mFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 }
