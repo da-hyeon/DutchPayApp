@@ -10,9 +10,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 
+import com.dutch.hdh.dutchpayapp.MyApplication;
 import com.dutch.hdh.dutchpayapp.R;
 import com.dutch.hdh.dutchpayapp.adapter.EventImageSliderAdapter;
-import com.dutch.hdh.dutchpayapp.data.db.User;
+import com.dutch.hdh.dutchpayapp.data.db.UserInfo;
 import com.dutch.hdh.dutchpayapp.ui.login.LoginFragment;
 import com.dutch.hdh.dutchpayapp.ui.register.allview.Register_ViewAllTermsConditionsFragment;
 import com.dutch.hdh.dutchpayapp.ui.register.term.Register_TermsConditionsAgreementFragment;
@@ -24,43 +25,30 @@ public class MainPresenter implements MainContract.Presenter {
     private MainContract.View mView;
     private Context mContext;
     private FragmentManager mFragmentManager;
+    private MyApplication myApplication;
 
     private long mLastTime;
 
-    private User mUser;
     private DrawerLayout mDrawerLayout;
 
     private LoginFragment mLoginFragment;
     public Register_TermsConditionsAgreementFragment mRegister_termsConditionsAgreementFragment;
 
 
-    private MainPresenter() {
-    }
-
-    private static MainPresenter itMe;
-
-    public static MainPresenter getInstance() {
-        if (itMe == null) {
-            itMe = new MainPresenter();
-        }
-        return itMe;
-    }
-
-    @Override
-    public void initLoginState() {
-        mView.showUserInfo(mUser.getUserName(), mUser.getUserMoney(), mUser.isUserState());
-    }
-
-    @Override
-    public void setMainPresenter(MainContract.View mView, Context mContext, FragmentManager mFragmentManager, DrawerLayout mDrawerLayout) {
+    public MainPresenter(MainContract.View mView, Context mContext, FragmentManager mFragmentManager, DrawerLayout mDrawerLayout) {
         this.mView = mView;
         this.mContext = mContext;
         this.mFragmentManager = mFragmentManager;
         this.mDrawerLayout = mDrawerLayout;
-        mUser = User.getInstance();
 
         mLoginFragment = new LoginFragment();
         mRegister_termsConditionsAgreementFragment = Register_TermsConditionsAgreementFragment.getInstance();
+        myApplication = MyApplication.getInstance();
+    }
+
+    @Override
+    public void initLoginState() {
+        mView.showUserInfo(myApplication.getUserInfo().getUserName(), myApplication.getUserInfo().getUserMoney(), myApplication.getUserInfo().isUserState());
     }
 
     @Override
@@ -84,7 +72,7 @@ public class MainPresenter implements MainContract.Presenter {
         mView.showDrawerLayout();
     }
 
-    /**
+     /**
      * 나가기 클릭 이벤트 처리
      */
     @Override
@@ -178,12 +166,12 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void clickLogout() {
+        myApplication.getUserInfo().setUserState(false);
         mView.showMain();
         mView.hideDrawerLayout();
         mView.changeTitle("");
         mView.showBell();
         mView.hideExit();
-        mUser.setUserState(false);
         mView.initData();
         mFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }

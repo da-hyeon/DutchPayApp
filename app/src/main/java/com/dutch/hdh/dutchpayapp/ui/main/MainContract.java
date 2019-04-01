@@ -38,7 +38,6 @@ public interface MainContract {
         void initLoginState();
 
         //set
-        void setMainPresenter(MainContract.View mView, Context mContext, FragmentManager mFragmentManager, DrawerLayout mDrawerLayout);
         void setAdapter(ViewPager viewPager , TabLayout tabLayout);
 
         //click

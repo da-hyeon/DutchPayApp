@@ -1,11 +1,12 @@
 package com.dutch.hdh.dutchpayapp.ui.register.password;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.dutch.hdh.dutchpayapp.MyApplication;
 import com.dutch.hdh.dutchpayapp.R;
-import com.dutch.hdh.dutchpayapp.data.db.User;
 import com.dutch.hdh.dutchpayapp.ui.register.success.Register_SuccessFragment;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Register_PaymentPasswordPresenter implements Register_PaymentPasswo
     private Register_PaymentPasswordContract.View mView;
     private Context mContext;
     private FragmentManager mFragmentManager;
+    private MyApplication myApplication;
 
     //비밀번호 확인
     private String mPassword;
@@ -30,6 +32,12 @@ public class Register_PaymentPasswordPresenter implements Register_PaymentPasswo
         this.mFragmentManager = mFragmentManager;
         mPassword = "";
         isPasswordCheck = false;
+        myApplication = MyApplication.getInstance();
+    }
+
+    @Override
+    public void getData(Bundle bundle) {
+
     }
 
     @Override
@@ -107,8 +115,7 @@ public class Register_PaymentPasswordPresenter implements Register_PaymentPasswo
                 if (isSame()) {
                     mView.showSuccessDialog("회원가입이 완료 되었습니다.");
                     //프래그먼트 이동
-                    User user = User.getInstance();
-                    user.setUserState(true);
+                    myApplication.getUserInfo().setUserState(true);
                 } else {
                     mView.showFailDialog("비밀번호가 맞지 않습니다.");
                     clickDeleteButton();
@@ -121,10 +128,12 @@ public class Register_PaymentPasswordPresenter implements Register_PaymentPasswo
 
     @Override
     public void clickSuccessDialog() {
+        //회원가입 완료
+
+
         mFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         Register_SuccessFragment register_successFragment = new Register_SuccessFragment();
-
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out);
         fragmentTransaction.replace(R.id.fragment_main, register_successFragment);

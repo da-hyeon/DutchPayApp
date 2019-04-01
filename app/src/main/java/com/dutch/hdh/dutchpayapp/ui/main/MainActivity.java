@@ -12,6 +12,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.dutch.hdh.dutchpayapp.MyApplication;
 import com.dutch.hdh.dutchpayapp.R;
 import com.dutch.hdh.dutchpayapp.databinding.ActivityMainBinding;
 import com.kinda.alert.KAlertDialog;
@@ -22,10 +23,13 @@ import com.takusemba.spotlight.target.SimpleTarget;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
+    private MyApplication myApplication;
+
     private ActivityMainBinding mBinding;
     public MainContract.Presenter mPresenter;
 
     public KAlertDialog mLodingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,8 +76,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
      */
     @Override
     public void initData() {
-        mPresenter = MainPresenter.getInstance();
-        mPresenter.setMainPresenter(this, this, getSupportFragmentManager(), mBinding.drawerLayout);
+        myApplication = MyApplication.getInstance();
+        myApplication.setActivity(this);
+
+        mPresenter = new MainPresenter(this, this, getSupportFragmentManager(), mBinding.drawerLayout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mBinding.drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -94,96 +100,97 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        if (myApplication.tutorialCheck) {
+            /*
+             * loMenu 튜토리얼
+             */
+            LinearLayout viewMore = mBinding.Appbar.loMenu;
+            int[] viewMoreLocation = new int[2];
+            viewMore.getLocationInWindow(viewMoreLocation);
+            float viewMoreX = viewMoreLocation[0] + viewMore.getWidth() / 2f;
+            float viewMoreY = viewMoreLocation[1] + viewMore.getHeight() / 2f;
+            float viewMoreRadius = viewMore.getWidth() / 2f;
 
-//        /*
-//         * loMenu 튜토리얼
-//         */
-//        LinearLayout viewMore = mBinding.Appbar.loMenu;
-//        int[] viewMoreLocation = new int[2];
-//        viewMore.getLocationInWindow(viewMoreLocation);
-//        float viewMoreX = viewMoreLocation[0] + viewMore.getWidth() / 2f;
-//        float viewMoreY = viewMoreLocation[1] + viewMore.getHeight() / 2f;
-//        float viewMoreRadius = viewMore.getWidth() / 2f;
-//
-//        SimpleTarget viewMoreTarget = new SimpleTarget.Builder(this)
-//                .setPoint(viewMoreX, viewMoreY)
-//                .setShape(new Circle(viewMoreRadius))
-//                .setTitle("더보기 메뉴")
-//                .setDescription("여러 메뉴를 볼 수 있습니다.")
-//                .build();
-//
-//        /*
-//          loLeftIcon 튜토리얼
-//         */
-//        LinearLayout bell = mBinding.Appbar.loLeftIcon;
-//        int[] bellLocation = new int[2];
-//        bell.getLocationInWindow(bellLocation);
-//        float bellX = bellLocation[0] + bell.getWidth() / 2f;
-//        float bellY = bellLocation[1] + bell.getHeight() / 2f;
-//        float bellRadius = bell.getWidth() / 2f;
-//
-//        SimpleTarget bellTarget = new SimpleTarget.Builder(this)
-//                .setPoint(bellX, bellY)
-//                .setShape(new Circle(bellRadius))
-//                .setTitle("알람")
-//                .setDescription("새로운 알림을 표시합니다.")
-//                .build();
-//
-//        /*
-//         * ivSoloPay 튜토리얼
-//         */
-//        ImageView soloPay = mBinding.fragmentMain.ivSoloPay;
-//        int[] soloPayLocation = new int[2];
-//        soloPay.getLocationInWindow(soloPayLocation);
-//        float soloPayX = soloPayLocation[0] + soloPay.getWidth() / 2f;
-//        float soloPayY = soloPayLocation[1] + soloPay.getHeight() / 2f;
-//        float soloPayRadius = soloPay.getWidth() / 2f;
-//
-//        SimpleTarget soloPayTarget = new SimpleTarget.Builder(this)
-//                .setPoint(soloPayX, soloPayY)
-//                .setShape(new Circle(soloPayRadius))
-//                .setTitle("개인결제")
-//                .setDescription("개인으로 결제를 할 수 있습니다.")
-//                .build();
-//
-//        /*
-//         * ivDutchPay 튜토리얼
-//         */
-//        ImageView dutchPay = mBinding.fragmentMain.ivDutchPay;
-//        int[] dutchPayLocation = new int[2];
-//        dutchPay.getLocationInWindow(dutchPayLocation);
-//        float dutchPayX = dutchPayLocation[0] + dutchPay.getWidth() / 2f;
-//        float dutchPayY = dutchPayLocation[1] + dutchPay.getHeight() / 2f;
-//        float dutchPayRadius = dutchPay.getWidth() / 2f;
-//
-//        SimpleTarget dutchPayTarget = new SimpleTarget.Builder(this)
-//                .setPoint(dutchPayX, dutchPayY)
-//                .setShape(new Circle(dutchPayRadius))
-//                .setTitle("더치페이")
-//                .setDescription("원하는 사람들과 금액을 나눠서 결제를 할 수 있습니다.")
-//                .build();
-//
-//        /*
-//         * 튜토리얼 시작
-//         */
-//
-//        Spotlight.with(this)
-//                .setOverlayColor(R.color.background1)
-//                .setDuration(1000L)
-//                .setAnimation(new DecelerateInterpolator(2f))
-//                .setTargets(viewMoreTarget , bellTarget , soloPayTarget , dutchPayTarget)
-//                .setClosedOnTouchedOutside(true)
-//                .setOnSpotlightStateListener(new OnSpotlightStateChangedListener() {
-//                    @Override
-//                    public void onStarted() {
-//                    }
-//
-//                    @Override
-//                    public void onEnded() {
-//                    }
-//                })
-//                .start();
+            SimpleTarget viewMoreTarget = new SimpleTarget.Builder(this)
+                    .setPoint(viewMoreX, viewMoreY)
+                    .setShape(new Circle(viewMoreRadius))
+                    .setTitle("더보기 메뉴")
+                    .setDescription("여러 메뉴를 볼 수 있습니다.")
+                    .build();
 
+        /*
+          loLeftIcon 튜토리얼
+         */
+            LinearLayout bell = mBinding.Appbar.loLeftIcon;
+            int[] bellLocation = new int[2];
+            bell.getLocationInWindow(bellLocation);
+            float bellX = bellLocation[0] + bell.getWidth() / 2f;
+            float bellY = bellLocation[1] + bell.getHeight() / 2f;
+            float bellRadius = bell.getWidth() / 2f;
+
+            SimpleTarget bellTarget = new SimpleTarget.Builder(this)
+                    .setPoint(bellX, bellY)
+                    .setShape(new Circle(bellRadius))
+                    .setTitle("알람")
+                    .setDescription("새로운 알림을 표시합니다.")
+                    .build();
+
+            /*
+             * ivSoloPay 튜토리얼
+             */
+            ImageView soloPay = mBinding.fragmentMain.ivSoloPay;
+            int[] soloPayLocation = new int[2];
+            soloPay.getLocationInWindow(soloPayLocation);
+            float soloPayX = soloPayLocation[0] + soloPay.getWidth() / 2f;
+            float soloPayY = soloPayLocation[1] + soloPay.getHeight() / 2f;
+            float soloPayRadius = soloPay.getWidth() / 2f;
+
+            SimpleTarget soloPayTarget = new SimpleTarget.Builder(this)
+                    .setPoint(soloPayX, soloPayY)
+                    .setShape(new Circle(soloPayRadius))
+                    .setTitle("개인결제")
+                    .setDescription("개인으로 결제를 할 수 있습니다.")
+                    .build();
+
+            /*
+             * ivDutchPay 튜토리얼
+             */
+            ImageView dutchPay = mBinding.fragmentMain.ivDutchPay;
+            int[] dutchPayLocation = new int[2];
+            dutchPay.getLocationInWindow(dutchPayLocation);
+            float dutchPayX = dutchPayLocation[0] + dutchPay.getWidth() / 2f;
+            float dutchPayY = dutchPayLocation[1] + dutchPay.getHeight() / 2f;
+            float dutchPayRadius = dutchPay.getWidth() / 2f;
+
+            SimpleTarget dutchPayTarget = new SimpleTarget.Builder(this)
+                    .setPoint(dutchPayX, dutchPayY)
+                    .setShape(new Circle(dutchPayRadius))
+                    .setTitle("더치페이")
+                    .setDescription("원하는 사람들과 금액을 나눠서 결제를 할 수 있습니다.")
+                    .build();
+
+            /*
+             * 튜토리얼 시작
+             */
+
+            Spotlight.with(this)
+                    .setOverlayColor(R.color.background1)
+                    .setDuration(1000L)
+                    .setAnimation(new DecelerateInterpolator(2f))
+                    .setTargets(viewMoreTarget, bellTarget, soloPayTarget, dutchPayTarget)
+                    .setClosedOnTouchedOutside(true)
+                    .setOnSpotlightStateListener(new OnSpotlightStateChangedListener() {
+                        @Override
+                        public void onStarted() {
+                        }
+
+                        @Override
+                        public void onEnded() {
+                        }
+                    })
+                    .start();
+            myApplication.tutorialCheck = false;
+        }
     }
 
     /**

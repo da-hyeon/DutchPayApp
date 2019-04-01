@@ -1,24 +1,37 @@
 package com.dutch.hdh.dutchpayapp.data.db;
 
+import com.google.gson.annotations.SerializedName;
+
 public class UserInfo {
+
+    @SerializedName("userEmail")
     private String userEmail;
+
+    @SerializedName("userPassword")
     private String userPassword;
+
+    @SerializedName("userPaymentPassword")
     private String userPaymentPassword;
+
+    @SerializedName("userName")
     private String userName;
+
+    @SerializedName("userRN")
     private int userRN;
+
+    @SerializedName("userGender")
     private int userGender;
+
+    @SerializedName("userPhone")
     private String userPhone;
+
+    @SerializedName("userMoney")
     private int userMoney;
 
-    public UserInfo(String userEmail, String userPassword, String userPaymentPassword, String userName, int userRN, int userGender, String userPhone, int userMoney) {
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
-        this.userPaymentPassword = userPaymentPassword;
-        this.userName = userName;
-        this.userRN = userRN;
-        this.userGender = userGender;
-        this.userPhone = userPhone;
-        this.userMoney = userMoney;
+    private boolean userState;
+
+    public UserInfo() {
+
     }
 
     public String getUserEmail() {
@@ -85,6 +98,14 @@ public class UserInfo {
         this.userMoney = userMoney;
     }
 
+    public boolean isUserState() {
+        return userState;
+    }
+
+    public void setUserState(boolean userState) {
+        this.userState = userState;
+    }
+
     @Override
     public String toString() {
         return "UserInfo{" +
@@ -96,6 +117,7 @@ public class UserInfo {
                 ", userGender=" + userGender +
                 ", userPhone='" + userPhone + '\'' +
                 ", userMoney=" + userMoney +
+                ", userState=" + userState +
                 '}';
     }
 }

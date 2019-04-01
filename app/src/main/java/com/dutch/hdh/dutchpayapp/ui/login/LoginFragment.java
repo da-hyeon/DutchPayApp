@@ -2,6 +2,7 @@ package com.dutch.hdh.dutchpayapp.ui.login;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,12 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     private LoginContract.Presenter mPresenter;
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -24,14 +31,14 @@ public class LoginFragment extends Fragment implements LoginContract.View{
 
         mPresenter = new LoginPresenter(this , getContext() ,getFragmentManager() , getActivity());
 
-        mBinding.btnLogin.setOnClickListener(v->
-            mPresenter.clickLogin(mBinding.editUserID.getText().toString() , mBinding.editUserPW.getText().toString())
+        mBinding.btnLogin.setOnClickListener(v-> {
+                    mPresenter.clickLogin(mBinding.editUserID.getText().toString(), mBinding.editUserPW.getText().toString());
+                }
         );
 
         mBinding.layoutRegister.setOnClickListener(v->
             mPresenter.clickRegister()
         );
-
 
         return mBinding.getRoot();
     }

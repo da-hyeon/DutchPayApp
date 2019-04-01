@@ -1,5 +1,7 @@
 package com.dutch.hdh.dutchpayapp.ui.register.password;
 
+import android.os.Bundle;
+
 public interface Register_PaymentPasswordContract {
 
     interface View{
@@ -16,6 +18,7 @@ public interface Register_PaymentPasswordContract {
     }
 
     interface Presenter{
+        void getData(Bundle bundle);
         void initRandomNumber();
 
         void clickNumber(String numberText);
