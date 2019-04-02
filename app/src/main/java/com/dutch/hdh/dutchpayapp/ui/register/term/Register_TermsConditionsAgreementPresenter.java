@@ -112,12 +112,13 @@ public class Register_TermsConditionsAgreementPresenter implements Register_Term
                 return;
             }
         }
-        Register_FormFragment mRegister_FormFragment = new Register_FormFragment();
 
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in,0,0,  R .anim.fade_out);
-        fragmentTransaction.replace(R.id.fragment_main, mRegister_FormFragment);
-        fragmentTransaction.addToBackStack(null);
+
+        Register_FormFragment mRegister_FormFragment = new Register_FormFragment();
+        fragmentTransaction.replace(R.id.flFragmentContainer, mRegister_FormFragment , Register_FormFragment.class.getName());
+        fragmentTransaction.addToBackStack(Register_FormFragment.class.getName());
         fragmentTransaction.commit();
         mFragmentManager.executePendingTransactions();
     }
@@ -128,13 +129,13 @@ public class Register_TermsConditionsAgreementPresenter implements Register_Term
         bundle.putInt("num", index);
         bundle.putBooleanArray("checkArray", mTOSCheckArray);
 
-        Register_ViewAllTermsConditionsFragment register_viewAllTermsConditionsFragment = new Register_ViewAllTermsConditionsFragment();
-        register_viewAllTermsConditionsFragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, 0,0, R.anim.fade_out);
-        fragmentTransaction.replace(R.id.fragment_main, register_viewAllTermsConditionsFragment);
-        fragmentTransaction.addToBackStack(null);
+
+        Register_ViewAllTermsConditionsFragment register_viewAllTermsConditionsFragment = new Register_ViewAllTermsConditionsFragment();
+        register_viewAllTermsConditionsFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.flFragmentContainer, register_viewAllTermsConditionsFragment , Register_ViewAllTermsConditionsFragment.class.getName());
+        fragmentTransaction.addToBackStack(Register_ViewAllTermsConditionsFragment.class.getName());
         fragmentTransaction.commit();
-        mFragmentManager.executePendingTransactions();
     }
 }

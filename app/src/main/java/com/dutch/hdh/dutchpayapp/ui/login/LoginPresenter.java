@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.Toast;
 
 import com.dutch.hdh.dutchpayapp.MyApplication;
 import com.dutch.hdh.dutchpayapp.R;
 import com.dutch.hdh.dutchpayapp.data.db.UserInfo;
-import com.dutch.hdh.dutchpayapp.data.util.ServerAPI;
-import com.dutch.hdh.dutchpayapp.ui.main.MainActivity;
 import com.dutch.hdh.dutchpayapp.ui.register.term.Register_TermsConditionsAgreementFragment;
 
 import retrofit2.Call;
@@ -36,11 +33,9 @@ public class LoginPresenter implements LoginContract.Presenter {
         mMyApplication = MyApplication.getInstance();
     }
 
-    @Override
-    public void onResume() {
-        ((MainActivity) mActivity).changeTitle("로그인");
-    }
-
+    /**
+     * 로그인 클릭 이벤트 처리
+     */
     @Override
     public void clickLogin(String userID, String userPassword) {
         if (userID.equals("") || userPassword.equals("")) {
@@ -70,36 +65,27 @@ public class LoginPresenter implements LoginContract.Presenter {
         }
     }
 
+    /**
+     * 회원가입 클릭 이벤트 처리
+     */
     @Override
     public void clickRegister() {
+        //프래그먼트 이동
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, 0,0, R.anim.fade_out);
+
         Register_TermsConditionsAgreementFragment mRegister_termsConditionsAgreementFragment = Register_TermsConditionsAgreementFragment.getInstance();
-
-        ((MainActivity) mActivity).hideDrawerLayout();
-        if (!mRegister_termsConditionsAgreementFragment.isVisible()) {
-            ((MainActivity) mActivity).changeTitle("회원가입");
-            ((MainActivity) mActivity).hideBell();
-            ((MainActivity) mActivity).showExit();
-
-            FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out);
-            fragmentTransaction.replace(R.id.fragment_main, mRegister_termsConditionsAgreementFragment);
-            mRegister_termsConditionsAgreementFragment.setArguments(null);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-            mFragmentManager.executePendingTransactions();
-
-        }
+        fragmentTransaction.replace(R.id.flFragmentContainer, mRegister_termsConditionsAgreementFragment , Register_TermsConditionsAgreementFragment.class.getName());
+        fragmentTransaction.addToBackStack(Register_TermsConditionsAgreementFragment.class.getName());
+        fragmentTransaction.commit();
     }
 
+    /**
+     * 로그인성공 다이얼로그 확인버튼 클릭 이벤트 처리
+     */
     @Override
     public void clickSuccessDialog() {
-
-        ((MainActivity) mActivity).changeTitle("");
-        ((MainActivity) mActivity).initData();
-        ((MainActivity) mActivity).hideExit();
-        ((MainActivity) mActivity).showMain();
-        ((MainActivity) mActivity).showBell();
-
-        mFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        //메인 프래그먼트 제외한 나머지 모두 스택에서 제거
+        mView.removeAllExceptMains();
     }
 }

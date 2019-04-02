@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
 
-import com.dutch.hdh.dutchpayapp.ui.main.MainActivity;
+import com.dutch.hdh.dutchpayapp.ui.main.activity.MainActivity;
 
 public class Register_SuccessPresenter implements Register_SuccessContract.Presenter {
 
@@ -18,18 +18,10 @@ public class Register_SuccessPresenter implements Register_SuccessContract.Prese
         this.mContext = mContext;
         this.mActivity = mActivity;
         this.mFragmentManager = mFragmentManager;
-
-        ((MainActivity)mActivity).changeTitle("회원가입 완료");
-        ((MainActivity) mActivity).initData();
     }
 
     @Override
     public void clickAppStart() {
-
-        ((MainActivity) mActivity).changeTitle("");
-        ((MainActivity) mActivity).hideExit();
-        ((MainActivity) mActivity).showMain();
-        ((MainActivity) mActivity).showBell();
-        mFragmentManager.popBackStack(null , FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        mView.removeAllExceptMains();
     }
 }

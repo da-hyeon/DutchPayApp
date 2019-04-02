@@ -11,10 +11,11 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.dutch.hdh.dutchpayapp.R;
+import com.dutch.hdh.dutchpayapp.base.BaseFragment;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentRegisterTermsConditionsAgreementBinding;
 import com.kinda.alert.KAlertDialog;
 
-public class Register_TermsConditionsAgreementFragment extends Fragment implements Register_TermsConditionsAgreementContract.View{
+public class Register_TermsConditionsAgreementFragment extends BaseFragment implements Register_TermsConditionsAgreementContract.View{
 
     private FragmentRegisterTermsConditionsAgreementBinding mBinding;
     private Register_TermsConditionsAgreementPresenter mPresenter;

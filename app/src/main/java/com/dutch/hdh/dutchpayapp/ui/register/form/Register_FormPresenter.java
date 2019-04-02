@@ -29,23 +29,25 @@ public class Register_FormPresenter implements Register_FormContract.Presenter {
 
         if(!isEmpty()) {
             if(isPasswordSame()) {
-                Register_PaymentPasswordFragment mRegister_paymentPasswordFragment = new Register_PaymentPasswordFragment();
 
-                Bundle bundle = new Bundle();
-                bundle.putString("userEmail", mRegisterEditText[0].getText().toString());
-                bundle.putString("userPassword", mRegisterEditText[1].getText().toString());
-                bundle.putString("userName", mRegisterEditText[3].getText().toString());
-                bundle.putString("userRN", mRegisterEditText[4].getText().toString());
-                bundle.putString("userGender", mRegisterEditText[5].getText().toString());
-                bundle.putString("userPhone", mRegisterEditText[6].getText().toString());
-                mRegister_paymentPasswordFragment.setArguments(bundle);
+
+                //2차비밀번호 설정 완료시 DB에 넘겨줄 데이터 Bundle을 SuccessFragment에 전송하기 위함.
+//                Bundle bundle = new Bundle();
+//                bundle.putString("userEmail", mRegisterEditText[0].getText().toString());
+//                bundle.putString("userPassword", mRegisterEditText[1].getText().toString());
+//                bundle.putString("userName", mRegisterEditText[3].getText().toString());
+//                bundle.putString("userRN", mRegisterEditText[4].getText().toString());
+//                bundle.putString("userGender", mRegisterEditText[5].getText().toString());
+//                bundle.putString("userPhone", mRegisterEditText[6].getText().toString());
+//                mRegister_paymentPasswordFragment.setArguments(bundle);
 
                 FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
                 fragmentTransaction.setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out);
-                fragmentTransaction.replace(R.id.fragment_main, mRegister_paymentPasswordFragment);
-                fragmentTransaction.addToBackStack(null);
+
+                Register_PaymentPasswordFragment mRegister_paymentPasswordFragment = new Register_PaymentPasswordFragment();
+                fragmentTransaction.replace(R.id.flFragmentContainer, mRegister_paymentPasswordFragment , Register_PaymentPasswordFragment.class.getName());
+                fragmentTransaction.addToBackStack(Register_PaymentPasswordFragment.class.getName());
                 fragmentTransaction.commit();
-                mFragmentManager.executePendingTransactions();
             }
             else {
                 mView.showDialog("비밀번호를 확인해주세요.");

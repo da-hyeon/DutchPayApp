@@ -15,6 +15,8 @@ public interface Register_PaymentPasswordContract {
 
         void changeTitle(String content);
         void changeMiddleTitle(String content);
+
+        void removeAllExceptMains();
     }
 
     interface Presenter{

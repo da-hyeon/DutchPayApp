@@ -2,16 +2,16 @@ package com.dutch.hdh.dutchpayapp.ui.register.success;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dutch.hdh.dutchpayapp.R;
+import com.dutch.hdh.dutchpayapp.base.BaseFragment;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentRegisterSuccessBinding;
 
 
-public class Register_SuccessFragment extends Fragment implements Register_SuccessContract.View {
+public class Register_SuccessFragment extends BaseFragment implements Register_SuccessContract.View {
 
     private FragmentRegisterSuccessBinding mBinding;
     private Register_SuccessContract.Presenter mPresenter;
@@ -23,11 +23,17 @@ public class Register_SuccessFragment extends Fragment implements Register_Succe
 
         mPresenter = new Register_SuccessPresenter( this , getContext() , getActivity() , getFragmentManager());
 
+        //앱시작 버튼 클릭
         mBinding.btnAppStart.setOnClickListener(v ->
             mPresenter.clickAppStart()
 
         );
 
         return mBinding.getRoot();
+    }
+
+    @Override
+    public void removeAllExceptMains() {
+        super.setDefaultMainStack();
     }
 }

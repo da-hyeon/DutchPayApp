@@ -2,16 +2,16 @@ package com.dutch.hdh.dutchpayapp.ui.register.allview;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dutch.hdh.dutchpayapp.R;
+import com.dutch.hdh.dutchpayapp.base.BaseFragment;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentRegisterViewAllTermsConditionsBinding;
 
 
-public class Register_ViewAllTermsConditionsFragment extends Fragment implements Register_ViewAllTermsConditionsContract.View {
+public class Register_ViewAllTermsConditionsFragment extends BaseFragment implements Register_ViewAllTermsConditionsContract.View {
 
     private FragmentRegisterViewAllTermsConditionsBinding mBinding;
     private Register_ViewAllTermsConditionsContract.Presenter mPresenter;
@@ -20,7 +20,6 @@ public class Register_ViewAllTermsConditionsFragment extends Fragment implements
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_register_view_all_terms_conditions, container, false);
-        View view = mBinding.getRoot();
 
         //객체생성 및 데이터초기화
         initData();
@@ -30,7 +29,7 @@ public class Register_ViewAllTermsConditionsFragment extends Fragment implements
                 mPresenter.clickTOS(mBinding.agreeCheck.isChecked())
         );
 
-        return view;
+        return mBinding.getRoot();
     }
 
     /**

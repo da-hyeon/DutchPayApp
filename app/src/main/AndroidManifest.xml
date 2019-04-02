@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme.FullScreen.Transparent">
 
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".ui.main.activity.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:exported="true"
             android:launchMode="singleTop"

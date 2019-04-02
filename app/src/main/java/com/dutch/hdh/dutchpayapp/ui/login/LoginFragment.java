@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dutch.hdh.dutchpayapp.R;
+import com.dutch.hdh.dutchpayapp.base.BaseFragment;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentLoginBinding;
 import com.kinda.alert.KAlertDialog;
 
-public class LoginFragment extends Fragment implements LoginContract.View{
+public class LoginFragment extends BaseFragment implements LoginContract.View{
 
     private FragmentLoginBinding mBinding;
     private LoginContract.Presenter mPresenter;
@@ -28,14 +29,15 @@ public class LoginFragment extends Fragment implements LoginContract.View{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mBinding = DataBindingUtil.inflate(inflater , R.layout.fragment_login, container, false);
-
         mPresenter = new LoginPresenter(this , getContext() ,getFragmentManager() , getActivity());
 
+        //로그인버튼 클릭
         mBinding.btnLogin.setOnClickListener(v-> {
                     mPresenter.clickLogin(mBinding.editUserID.getText().toString(), mBinding.editUserPW.getText().toString());
                 }
         );
 
+        //회원가입 버튼 클릭
         mBinding.layoutRegister.setOnClickListener(v->
             mPresenter.clickRegister()
         );
@@ -43,12 +45,9 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         return mBinding.getRoot();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.onResume();
-    }
-
+    /**
+     * 성공 다이얼로그 보이기
+     */
     @Override
     public void showSuccessDialog(String content) {
         new KAlertDialog(getContext(), KAlertDialog.SUCCESS_TYPE)
@@ -62,6 +61,9 @@ public class LoginFragment extends Fragment implements LoginContract.View{
                 .show();
     }
 
+    /**
+     * 실패 다이얼로그 보이기
+     */
     @Override
     public void showFailDialog(String content) {
         new KAlertDialog(getContext(), KAlertDialog.WARNING_TYPE)
@@ -70,5 +72,10 @@ public class LoginFragment extends Fragment implements LoginContract.View{
                 .setConfirmText("확인")
                 .setConfirmClickListener(sDialog -> {sDialog.dismissWithAnimation();})
                 .show();
+    }
+
+    @Override
+    public void removeAllExceptMains(){
+        super.setDefaultMainStack();
     }
 }

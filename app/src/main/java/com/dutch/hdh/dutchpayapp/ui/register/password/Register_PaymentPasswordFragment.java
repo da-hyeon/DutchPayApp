@@ -12,10 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dutch.hdh.dutchpayapp.R;
+import com.dutch.hdh.dutchpayapp.base.BaseFragment;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentRegisterPaymentPasswordBinding;
 import com.kinda.alert.KAlertDialog;
 
-public class Register_PaymentPasswordFragment extends Fragment implements Register_PaymentPasswordContract.View {
+public class Register_PaymentPasswordFragment extends BaseFragment implements Register_PaymentPasswordContract.View {
 
     private FragmentRegisterPaymentPasswordBinding mBinding;
     private Register_PaymentPasswordContract.Presenter mPresenter;
@@ -143,5 +144,10 @@ public class Register_PaymentPasswordFragment extends Fragment implements Regist
     @Override
     public void changeMiddleTitle(String content) {
         mBinding.tvMiddleTitle.setText(content);
+    }
+
+    @Override
+    public void removeAllExceptMains() {
+        super.setDefaultMainStack();
     }
 }

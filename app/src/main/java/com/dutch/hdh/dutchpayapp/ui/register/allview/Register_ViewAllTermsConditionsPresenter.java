@@ -2,22 +2,11 @@ package com.dutch.hdh.dutchpayapp.ui.register.allview;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.widget.ImageView;
 
 
-import com.dutch.hdh.dutchpayapp.R;
-import com.dutch.hdh.dutchpayapp.ui.main.MainActivity;
-import com.dutch.hdh.dutchpayapp.ui.main.MainContract;
-import com.dutch.hdh.dutchpayapp.ui.main.MainPresenter;
 import com.dutch.hdh.dutchpayapp.ui.register.term.Register_TermsConditionsAgreementFragment;
-
-import java.util.Objects;
 
 public class Register_ViewAllTermsConditionsPresenter implements Register_ViewAllTermsConditionsContract.Presenter {
 

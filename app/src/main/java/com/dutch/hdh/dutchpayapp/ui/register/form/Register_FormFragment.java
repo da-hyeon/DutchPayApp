@@ -10,10 +10,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.dutch.hdh.dutchpayapp.R;
+import com.dutch.hdh.dutchpayapp.base.BaseFragment;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentRegisterFormBinding;
 import com.kinda.alert.KAlertDialog;
 
-public class Register_FormFragment extends Fragment implements Register_FormContract.View{
+public class Register_FormFragment extends BaseFragment implements Register_FormContract.View{
 
     private FragmentRegisterFormBinding mBinding;
     private Register_FormContract.Presenter mPresenter;

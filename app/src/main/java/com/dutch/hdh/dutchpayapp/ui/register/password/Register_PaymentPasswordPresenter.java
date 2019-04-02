@@ -126,22 +126,26 @@ public class Register_PaymentPasswordPresenter implements Register_PaymentPasswo
         }
     }
 
+    /**
+     * 회원가입 성공 다이얼로그 클릭 이벤트 처리
+     */
     @Override
     public void clickSuccessDialog() {
-        //회원가입 완료
 
+        mView.removeAllExceptMains();
 
-        mFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
-        Register_SuccessFragment register_successFragment = new Register_SuccessFragment();
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, 0, 0, R.anim.fade_out);
-        fragmentTransaction.replace(R.id.fragment_main, register_successFragment);
-        fragmentTransaction.addToBackStack(null);
+
+        Register_SuccessFragment register_successFragment = new Register_SuccessFragment();
+        fragmentTransaction.replace(R.id.flFragmentContainer, register_successFragment , Register_SuccessFragment.class.getName());
+        fragmentTransaction.addToBackStack(Register_SuccessFragment.class.getName());
         fragmentTransaction.commit();
-        mFragmentManager.executePendingTransactions();
     }
 
+    /**
+     * 비밀번호가 서로 같은지 조회
+     */
     private boolean isSame() {
         if (mPassword.equals(mPasswordCheck)) {
             return true;
