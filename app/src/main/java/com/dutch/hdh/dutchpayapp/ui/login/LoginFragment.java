@@ -78,4 +78,11 @@ public class LoginFragment extends BaseFragment implements LoginContract.View{
     public void removeAllExceptMains(){
         super.setDefaultMainStack();
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mBinding.editUserID.setText("");
+        mBinding.editUserPW.setText("");
+    }
 }

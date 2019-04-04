@@ -3,8 +3,10 @@ package com.dutch.hdh.dutchpayapp;
 import android.app.Activity;
 import android.app.Application;
 
+import com.dutch.hdh.dutchpayapp.data.db.PersonalPaymentInformation;
 import com.dutch.hdh.dutchpayapp.data.db.UserInfo;
 import com.dutch.hdh.dutchpayapp.data.util.ServerAPI;
+import com.dutch.hdh.dutchpayapp.ui.register.term.Register_TermsConditionsAgreementFragment;
 
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -27,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MyApplication extends Application {
     private static MyApplication appInstance;
 
-    private static final String BASE_URL = "http://kjg123kg.cafe24.com/";
+    private static final String BASE_URL = "http://dutchkor02.cafe24.com/";
     public static boolean tutorialCheck ;
     //타임아웃
     private static final int CONNECT_TIMEOUT = 15;
@@ -35,7 +37,11 @@ public class MyApplication extends Application {
     private static final int READ_TIMEOUT = 15;
     private static OkHttpClient client;
     private static ServerAPI Interface;
+
     private UserInfo mUserInfo;
+    private PersonalPaymentInformation mPersonalPaymentInformation;
+
+    private Register_TermsConditionsAgreementFragment mRegister_termsConditionsAgreementFragment;
     private Activity mActivity;
 
     @Override
@@ -44,25 +50,9 @@ public class MyApplication extends Application {
         appInstance = this;
     }
 
-    public UserInfo getUserInfo() {
-        if (mUserInfo == null)
-            mUserInfo = new UserInfo();
-
-        return mUserInfo;
-    }
-
-    public void setUserInfo(UserInfo mUserInfo) {
-        this.mUserInfo = mUserInfo;
-    }
-
-    public Activity getActivity() {
-        return mActivity;
-    }
-
-    public void setActivity(Activity mActivity) {
-        this.mActivity = mActivity;
-    }
-
+    /**
+     * MyApplication Singleton
+     */
     public static MyApplication getInstance() {
         if (appInstance == null) {
             appInstance = new MyApplication();
@@ -71,6 +61,59 @@ public class MyApplication extends Application {
         return appInstance;
     }
 
+    /**
+     * UserInfo Singleton
+     */
+    public UserInfo getUserInfo() {
+        if (mUserInfo == null) {
+            mUserInfo = new UserInfo();
+            mUserInfo.setUserMoney(200000);
+        }
+
+        return mUserInfo;
+    }
+
+    public void setUserInfo(UserInfo mUserInfo) {
+        this.mUserInfo = mUserInfo;
+    }
+
+    /**
+     * PersonalPaymentInformation Singleton
+     */
+    public PersonalPaymentInformation getPersonalPaymentInformation() {
+        if (mPersonalPaymentInformation == null)
+            mPersonalPaymentInformation = new PersonalPaymentInformation("금홍짬뽕" , "2019-04-04" , 300000);
+
+        return mPersonalPaymentInformation;
+    }
+
+    /**
+     * Register_TermsConditionsAgreementFragment Singleton
+     */
+    public Register_TermsConditionsAgreementFragment getRegister_TermsConditionsAgreementFragment() {
+        if (mRegister_termsConditionsAgreementFragment == null)
+            mRegister_termsConditionsAgreementFragment = new Register_TermsConditionsAgreementFragment();
+
+        return mRegister_termsConditionsAgreementFragment;
+    }
+
+    /**
+     * getActivity
+     */
+    public Activity getActivity() {
+        return mActivity;
+    }
+
+    /**
+     * setActivity
+     */
+    public void setActivity(Activity mActivity) {
+        this.mActivity = mActivity;
+    }
+
+    /**
+     * ServerAPI Adapter
+     */
     public synchronized static ServerAPI getRestAdapter() {
         if (Interface == null) {
             //통신로그를 확인하기 위한 부분
@@ -145,5 +188,6 @@ public class MyApplication extends Application {
 
         return builder;
     }
+
 
 }
