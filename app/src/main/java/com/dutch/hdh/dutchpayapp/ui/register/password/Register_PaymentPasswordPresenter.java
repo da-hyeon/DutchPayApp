@@ -121,28 +121,28 @@ public class Register_PaymentPasswordPresenter implements Register_PaymentPasswo
             if (mPasswordCheck.length() == 6) {
                 if (isSame()) {
 
-                    Call<Void> userRegister = MyApplication
-                            .getRestAdapter()
-                            .setUserRegister("asd",
-                                    "asd",
-                                    "asd",
-                                    "asd" ,
-                                    "asd",
-                                    "asd");
-
-                    userRegister.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            mView.showSuccessDialog("회원가입이 완료 되었습니다.");
-                            myApplication.getUserInfo().setUserState(true);
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Log.d("fail" , t.getLocalizedMessage());
-                            Log.d("fail" , t.getMessage());
-                        }
-                    });
+//                    Call<Void> userRegister = MyApplication
+//                            .getRestAdapter()
+//                            .setUserRegister("asd",
+//                                    "asd",
+//                                    "asd",
+//                                    "asd" ,
+//                                    "asd",
+//                                    "asd");
+//
+//                    userRegister.enqueue(new Callback<Void>() {
+//                        @Override
+//                        public void onResponse(Call<Void> call, Response<Void> response) {
+//                            mView.showSuccessDialog("회원가입이 완료 되었습니다.");
+//                            myApplication.getUserInfo().setUserState(true);
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<Void> call, Throwable t) {
+//                            Log.d("fail" , t.getLocalizedMessage());
+//                            Log.d("fail" , t.getMessage());
+//                        }
+//                    });
 
 
                 } else {
