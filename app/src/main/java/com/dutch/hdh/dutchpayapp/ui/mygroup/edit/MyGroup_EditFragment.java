@@ -1,25 +1,15 @@
 package com.dutch.hdh.dutchpayapp.ui.mygroup.edit;
 
-import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dutch.hdh.dutchpayapp.R;
-import com.dutch.hdh.dutchpayapp.base.BaseFragment;
-import com.dutch.hdh.dutchpayapp.data.db.GroupParticipants;
-import com.dutch.hdh.dutchpayapp.databinding.FragmentMyGroupBinding;
+import com.dutch.hdh.dutchpayapp.base.fragment.BaseFragment;
 import com.dutch.hdh.dutchpayapp.databinding.FragmentMyGroupEditBinding;
 import com.kinda.alert.KAlertDialog;
-
-import java.util.ArrayList;
 
 public class MyGroup_EditFragment extends BaseFragment implements MyGroup_EditContract.View {
 
@@ -44,6 +34,10 @@ public class MyGroup_EditFragment extends BaseFragment implements MyGroup_EditCo
             mPresenter.clickDirectInput();
         });
 
+        mBinding.btComplete.setOnClickListener(v->
+            mPresenter.clickComplete(mBinding.etGroupName.getText().toString())
+        );
+
         return mBinding.getRoot();
     }
 
@@ -57,23 +51,13 @@ public class MyGroup_EditFragment extends BaseFragment implements MyGroup_EditCo
     }
 
     @Override
-    public void showWarningDialog(String title, String content) {
-        new KAlertDialog(getContext(), KAlertDialog.WARNING_TYPE)
-                .setTitleText(title)
-                .setContentText(content)
-                .setConfirmText("확인")
-                .setConfirmClickListener(sDialog -> {
-                    sDialog.dismissWithAnimation();
-                    getFragmentManager().popBackStack();
-                })
-                .setCancelText("취소")
-                .setCancelClickListener(sDialog -> sDialog.dismissWithAnimation())
-                .show();
+    public void changePersonCount(int num) {
+        mBinding.tvPersonCount.setText("( "+ num +"명 )");
     }
 
     @Override
-    public void changePersonCount(int num) {
-        mBinding.tvPersonCount.setText("( "+ num +"명 )");
+    public void changeGroupName(String groupName) {
+        mBinding.etGroupName.setText(groupName);
     }
 
     public void onBackPressed() {
@@ -85,4 +69,5 @@ public class MyGroup_EditFragment extends BaseFragment implements MyGroup_EditCo
         super.onResume();
         mPresenter.refreshData(getArguments());
     }
+
 }
