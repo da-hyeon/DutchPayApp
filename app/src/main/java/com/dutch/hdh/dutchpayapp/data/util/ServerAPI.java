@@ -1,16 +1,14 @@
 package com.dutch.hdh.dutchpayapp.data.util;
 
 import com.dutch.hdh.dutchpayapp.Constants;
+import com.dutch.hdh.dutchpayapp.data.db.EventList;
 import com.dutch.hdh.dutchpayapp.data.db.MyGroup;
 import com.dutch.hdh.dutchpayapp.data.db.UserInfo;
 
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -83,10 +81,65 @@ public interface ServerAPI {
             @Field("groupacode") String groupacode);
 
 
+    /**
+     * 그룹 업데이트 요청
+     * @param groupacode
+     * @param groupcontent
+     * @param peoplenumber
+     * @return
+     */
     @FormUrlEncoded
     @POST(Constants.UPDATE_GROUP_REQUEST_URL)
     Call<Void> updateGroup(
             @Field("groupacode") String groupacode ,
+            @Field("groupaname") String groupaname ,
             @Field("groupcontent") String groupcontent ,
             @Field("peoplenumber") String peoplenumber);
+
+    /**
+     * 진행중 이벤트 요청
+     * @return
+     */
+    @GET(Constants.SELECT_EVENT_ONGOING_REQUEST_URL)
+    Call<EventList> selectOnGoingEvent();
+
+    /**
+     * 진행종료 이벤트 요청
+     * @return
+     */
+    @GET(Constants.SELECT_EVENT_ENDPROGRESS_REQUEST_URL)
+    Call<EventList> selectEndProgressEvent();
+
+    /**
+     * 이메일 변경 요청
+     * @param email
+     * @param usercode
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(Constants.CHANGE_EMAIL_REQUEST_URL)
+    Call<Void> changeEmail(@Field("email") String email ,
+                              @Field("usercode") String usercode );
+
+    /**
+     * 비밀번호 변경 요청
+     * @param password
+     * @param usercode
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(Constants.CHANGE_PASSWORD_REQUEST_URL)
+    Call<Void> changePassword(@Field("password") String password ,
+                           @Field("usercode") String usercode );
+
+    /**
+     * 전화번호 변경 요청
+     * @param phone
+     * @param usercode
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(Constants.CHANGE_PHONENUMBER_REQUEST_URL)
+    Call<Void> changePhoneNumber(@Field("phone") String phone ,
+                              @Field("usercode") String usercode );
 }

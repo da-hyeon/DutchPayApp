@@ -3,9 +3,12 @@ package com.dutch.hdh.dutchpayapp.ui.main.fragment;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.dutch.hdh.dutchpayapp.R;
 import com.dutch.hdh.dutchpayapp.base.activity.BaseActivity;
@@ -32,6 +35,10 @@ public class MainFragment extends BaseFragment implements MainFragmentContract.V
 
         initData();
 
+
+        //흐르게 설정
+        mBinding.tvTitle.setSelected(true);
+
         //개인결제 시작하기 버튼 클릭
         mBinding.ivSoloPay.setOnClickListener(v->{
             mPresenter.clickSolopay();
@@ -42,7 +49,28 @@ public class MainFragment extends BaseFragment implements MainFragmentContract.V
 
         });
 
-       // ((MainActivity)getActivity()).getPresenter()
+        //모든 이벤트 보기 버튼 클릭
+        mBinding.llAllEvent.setOnClickListener(v->
+            mPresenter.clickAllEvent()
+        );
+
+        //ViewPager 슬라이드
+        mBinding.vpMainVP.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                mPresenter.slideViewPagerAction(i);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
 
         return mBinding.getRoot();
     }
@@ -69,5 +97,10 @@ public class MainFragment extends BaseFragment implements MainFragmentContract.V
             mBinding.layoutSuccessLogin.setVisibility(View.GONE);
              mBinding.layoutNoneLogin.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void changeEventTitle(String title) {
+        mBinding.tvEventTitle.setText(title);
     }
 }

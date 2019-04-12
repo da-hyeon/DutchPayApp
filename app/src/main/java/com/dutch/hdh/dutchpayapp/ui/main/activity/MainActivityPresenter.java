@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 
 import com.dutch.hdh.dutchpayapp.MyApplication;
 import com.dutch.hdh.dutchpayapp.R;
+import com.dutch.hdh.dutchpayapp.ui.event.detail.Event_DetailFragment;
 import com.dutch.hdh.dutchpayapp.ui.event.main.Event_MainFragment;
 import com.dutch.hdh.dutchpayapp.ui.login.LoginFragment;
 import com.dutch.hdh.dutchpayapp.ui.main.fragment.MainFragment;
@@ -110,7 +111,8 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
             mView.showExit();
         }
 
-        else if(getCurrentFragment() instanceof Event_MainFragment){
+        else if(getCurrentFragment() instanceof Event_MainFragment ||
+                getCurrentFragment() instanceof Event_DetailFragment){
             mView.changeTitle("이벤트");
             mView.hideBell();
             mView.showExit();
