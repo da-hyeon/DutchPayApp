@@ -1,24 +1,32 @@
-package com.dutch.hdh.dutchpayapp.ui.solopay;
+package com.dutch.hdh.dutchpayapp.ui.personal_payment.main;
 
 import android.view.SurfaceView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dutch.hdh.dutchpayapp.base.fragment.BaseFragmentContract;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
-public interface SoloPayContract {
+public interface PersonalPayment_MainContract {
     interface View extends BaseFragmentContract.View {
         //init
         void initData();
 
         //show
-        void showScanView();
+        void showPaymentCodeView();
         void showPaymentNumberView();
-        void showCamera(int RequestCameraPermissionID);
+        void showQRCodeView();
+        void showBarCodeView();
+        void showQRCodeViewScaleUp();
+        void showBarCodeViewScaleUp();
+        void showQRCodeViewScaleDown();
+        void showBarCodeViewScaleDown();
 
         //hide
         void hideScanView();
         void hidePaymentNumberView();
-        void hideCamera();
+        void hideQRCodeView();
+        void hideBarCodeView();
 
         //change
         void changeScanButtonBackgroundAndTextColor(boolean state);
@@ -27,20 +35,18 @@ public interface SoloPayContract {
 
     }
     interface Presenter{
-
-        //Override
-        void onPause();
-        void onResume();
-
         //set
-        void setProcessor(BarcodeDetector barcodeDetector);
-        void surfaceViewCallback(SurfaceView surfaceView);
+        void initView(ImageView qrCodeImage , ImageView barcodeImage);
+
 
         //click
-        void clickScan();
+        void clickPaymentCode();
         void clickPaymentNumber();
         void clickPaymentInfo();
         void clickTemporaryButton();
+        void clickScan();
+        void clickQRCode();
+        void clickBarCode();
 
         //textChangeNotice
         void textChangeNotification(int index, String num);
